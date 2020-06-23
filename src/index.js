@@ -24,9 +24,11 @@ ReactDOM.render(
 	<Provider store={store}>
 		<BrowserRouter>
 			<React.StrictMode>
-				<ToastProvider autoDismiss='true'>
-					<App />
-				</ToastProvider>
+				<ZeitProvider>
+					<ToastProvider autoDismiss='true'>
+						<App />
+					</ToastProvider>
+				</ZeitProvider>
 			</React.StrictMode>
 		</BrowserRouter>
 	</Provider>,

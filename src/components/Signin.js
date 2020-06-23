@@ -46,8 +46,8 @@ const SignIn = () => {
 
 	return (
 		<div>
-			<div className='mycard'>
-				<div className='card auth-card input-field'>
+			<div className='mycard '>
+				<div className='card auth-card input-field z-depth-0'>
 					<div>
 						<i className='medium material-icons'>account_circle</i>
 						<h2 style={{ color: '#008cba' }}>Sign In</h2>

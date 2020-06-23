@@ -73,10 +73,10 @@ const SignUp = () => {
 
 	return (
 		<div>
-			{loader ? <LinearProgress /> : null}
+			{loader ? <LinearProgress style={{ width: '100%' }} /> : null}
 
 			<div className='mycard'>
-				<div className='card auth-card input-field'>
+				<div className='card auth-card input-field z-depth-0'>
 					<div>
 						<i className='medium material-icons'>account_circle</i>
 						<h2 style={{ color: '#008cba' }}>Sign Up</h2>

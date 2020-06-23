@@ -3,6 +3,7 @@ import M from 'materialize-css';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions/user';
+import { Tooltip } from '@zeit-ui/react';
 
 const Navbar = () => {
 	const respModal = useRef(null);
@@ -18,11 +19,21 @@ const Navbar = () => {
 
 	return (
 		<div>
-			<nav style={{ backgroundColor: '#008cba', padding: '0px 50px' }}>
+			<nav
+				style={{
+					backgroundColor: '#008cba',
+					padding: '0px 50px',
+					margin: '0px',
+				}}
+			>
 				<div className='nav-wrapper'>
-					<a href='#!' className='brand-logo'>
-						NOTES
-					</a>
+					<h5
+						className='brand-logo'
+						style={{ fontFamily: "'Permanent Marker', cursive" }}
+					>
+						{/*'Gochi Hand', cursive*/}
+						NOTE...
+					</h5>
 					{user ? (
 						<a href='#' data-target='mobile-demo' className='sidenav-trigger'>
 							<i className='material-icons'>menu</i>
@@ -32,21 +43,35 @@ const Navbar = () => {
 						{user ? (
 							<div>
 								<li>
-									<Link to='/'>My Notes</Link>
+									<Tooltip text={'My notes'}>
+										<Link to='/'>
+											<i className='material-icons'>note</i>
+										</Link>
+									</Tooltip>
 								</li>
 								<li>
-									<Link to='/addnote'>Add Notes</Link>
+									<Tooltip text={'Add note'}>
+										<Link to='/addnote'>
+											<i className='material-icons'>note_add</i>
+										</Link>
+									</Tooltip>
 								</li>
-								<li>
+								{/* <li>
 									<Link to='/'>Tags</Link>
+								</li> */}
+								<li>
+									<Tooltip text={'Favourite notes'}>
+										<Link to='/favnotes'>
+											<i className='material-icons'>favorite</i>
+										</Link>
+									</Tooltip>
 								</li>
 								<li>
-									<Link to='/favnotes'>Favourites</Link>
-								</li>
-								<li>
-									<i className='material-icons' onClick={() => logout()}>
-										power_settings_new
-									</i>
+									<Tooltip text={'Log Out'}>
+										<i className='material-icons' onClick={() => logout()}>
+											power_settings_new
+										</i>
+									</Tooltip>
 								</li>
 							</div>
 						) : (
@@ -67,13 +92,14 @@ const Navbar = () => {
 				className='sidenav'
 				id='mobile-demo'
 				ref={respModal}
-				style={{ color: 'blue', backgroundColor: 'blue' }}
+				style={{ background: '#008cba', paddingTop: '40px' }}
 			>
 				<li>
 					<Link
 						to='/'
 						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
 					>
+						<i className='material-icons'>note</i>
 						My Notes
 					</Link>
 				</li>
@@ -82,22 +108,24 @@ const Navbar = () => {
 						to='/addnote'
 						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
 					>
+						<i className='material-icons'>note_add</i>
 						Add Note
 					</Link>
 				</li>
-				<li>
+				{/* <li>
 					<Link
 						to='/'
 						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
 					>
 						Tags
 					</Link>
-				</li>
+				</li> */}
 				<li>
 					<Link
 						to='/favnotes'
 						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
 					>
+						<i className='material-icons'>favorite</i>
 						Favourites
 					</Link>
 				</li>
@@ -109,6 +137,7 @@ const Navbar = () => {
 							logout();
 						}}
 					>
+						<i className='material-icons'>power_settings_new</i>
 						Log Out
 					</a>
 				</li>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router';
-import { Button } from '@material-ui/core';
+import { Button, LinearProgress } from '@material-ui/core';
 import M from 'materialize-css';
 import { useToasts } from 'react-toast-notifications';
 
@@ -14,12 +14,14 @@ const UpdateNote = () => {
 	const [body, setBody] = useState('');
 	const history = useHistory();
 	const deleteModal = useRef(null);
+	const [loader, setLoader] = useState(false);
 
 	// useEffect(() => {
 	// 	M.updateTextFields();
 	// }, []);
 
 	useEffect(() => {
+		setLoader(true);
 		fetch(`http://localhost:5000/updatenote/${noteId}`, {
 			headers: {
 				'Content-type': 'application/json',
@@ -33,13 +35,16 @@ const UpdateNote = () => {
 				setBody(data.mynote.body);
 				setNote(data.mynote);
 				M.updateTextFields();
+				setLoader(false);
 			})
 			.catch((error) => {
 				console.log(error);
+				setLoader(false);
 			});
 	}, [noteId]);
 
 	const updateNote = () => {
+		setLoader(true);
 		fetch('http://localhost:5000/updatenote', {
 			method: 'put',
 			headers: {
@@ -63,9 +68,11 @@ const UpdateNote = () => {
 				} else {
 					addToast(response.error, { appearance: 'error' });
 				}
+				setLoader(false);
 			})
 			.catch((error) => {
 				console.log(error);
+				setLoader(false);
 			});
 	};
 
@@ -158,6 +165,7 @@ const UpdateNote = () => {
 
 	return (
 		<>
+			{loader ? <LinearProgress style={{ width: '100%' }} /> : null}
 			{note ? (
 				<div className='row'>
 					<div className='col s12 '>
@@ -213,9 +221,9 @@ const UpdateNote = () => {
 										^Note
 									</button>
 								</div>
-								<div className='col right s4 m2'>
+								{/* <div className='col right s4 m2'>
 									<button className='button button2'>+Tag</button>
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>

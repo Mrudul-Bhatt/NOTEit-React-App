@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CssBaseline } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
+import { LinearProgress } from '@material-ui/core';
 
 const AddNote = () => {
 	const [title, setTitle] = useState('');
@@ -46,31 +47,32 @@ const AddNote = () => {
 
 	return (
 		<div className='row'>
-			<div className='col s12 '>
-				<div className='card blue-grey darken-1'>
-					<div className='card-action'>
-						<a href='#'>
-							<i
-								className='material-icons'
-								onClick={() => setBold(!bold)}
-								style={bold ? { color: 'blue' } : null}
-							>
-								format_bold
-							</i>
-						</a>
-						<a href='#'>
-							<i className='material-icons' style={{ color: 'blue' }}>
-								format_bold
-							</i>
-						</a>
-						<a href='#'>
-							<i className='material-icons' style={{ color: 'blue' }}>
-								format_italic
-							</i>
-						</a>
+			{loader ? <LinearProgress style={{ width: '100%' }} /> : null}
+			{/* <div className='col s12 '>
+					<div className='card blue-grey darken-1'>
+						<div className='card-action'>
+							<a href='#'>
+								<i
+									className='material-icons'
+									onClick={() => setBold(!bold)}
+									style={bold ? { color: 'blue' } : null}
+								>
+									format_bold
+								</i>
+							</a>
+							<a href='#'>
+								<i className='material-icons' style={{ color: 'blue' }}>
+									format_bold
+								</i>
+							</a>
+							<a href='#'>
+								<i className='material-icons' style={{ color: 'blue' }}>
+									format_italic
+								</i>
+							</a>
+						</div>
 					</div>
-				</div>
-			</div>
+				</div> */}
 			<div className='col s12'>
 				<div className='row'>
 					<div className='input-field col s12'>
@@ -100,11 +102,11 @@ const AddNote = () => {
 								+Note
 							</button>
 						</div>
-						<div className='col right s4 m2'>
+						{/* <div className='col right s4 m2'>
 							<button className='button button2' onClick={() => addNote()}>
 								+Tag
 							</button>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>
