@@ -18,22 +18,18 @@ const App = () => {
 	const path = useSelector((state) => state.path);
 	const dispatch = useDispatch();
 	const checkAuth = () => dispatch(actions.checkAuth());
-	console.log(user);
 
 	useEffect(() => {
-		console.log('check auth');
+		//console.log('check auth');
 		checkAuth();
 
 		history.push(path);
-
-		console.log(user);
-		console.log(path);
 	}, [path]);
 
 	let routes = (
 		<Switch>
-			<Route path='/signin' component={Signin} />
-			<Route path='/signup' component={Signup} />
+			<Route path='/signin' exact component={Signin} />
+			<Route path='/signup' exact component={Signup} />
 		</Switch>
 	);
 
@@ -41,10 +37,10 @@ const App = () => {
 		routes = (
 			<Switch>
 				<Route path='/' exact component={AllNotes} />
-				<Route path='/addnote' component={AddNote} />
-				<Route path='/favnotes' component={FavNotes} />
-				<Route path='/singlenote/:noteId' component={SingleNote} />
-				<Route path='/updatenote/:noteId' component={UpdateNote} />
+				<Route path='/addnote' exact component={AddNote} />
+				<Route path='/favnotes' exact component={FavNotes} />
+				<Route path='/singlenote/:noteId' exact component={SingleNote} />
+				<Route path='/updatenote/:noteId' exact component={UpdateNote} />
 			</Switch>
 		);
 	}

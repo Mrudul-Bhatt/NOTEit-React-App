@@ -20,15 +20,8 @@ import {
 
 export function* watchSaga() {
 	yield all([
-		// takeEvery('SIGNUP', sagaSignup),
 		takeEvery('SIGNIN', sagaSignin),
 		takeEvery('LOGOUT', sagaLogout),
 		takeEvery('CHECK_AUTH', sagaCheckAuth),
-		// takeEvery('FETCH_ALL', sagaFetchAll),
-		// takeEvery('LIKE', sagaLike),
-		// takeEvery('UNLIKE', sagaUnlike),
-		// takeEvery('COMMENT', sagaComment),
-		// takeEvery('DELETE_POST', sagaDeletePost),
-		// takeEvery('FETCH_SUB_ALL', sagaFetchSubAll),
 	]);
 }

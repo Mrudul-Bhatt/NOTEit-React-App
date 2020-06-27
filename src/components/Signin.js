@@ -52,7 +52,6 @@ const SignIn = () => {
 			<div className='mycard '>
 				<div className='card auth-card input-field z-depth-0'>
 					<div>
-						{/* <i className='material-icons'>account_circle</i> */}
 						<h2 style={{ color: '#008cba' }}>Sign In</h2>
 					</div>
 					<div className='input-field'>
@@ -60,7 +59,6 @@ const SignIn = () => {
 							id='email'
 							className='validate'
 							type='email'
-							//placeholder='Email'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
@@ -71,7 +69,6 @@ const SignIn = () => {
 							id='password'
 							type='password'
 							className='validate'
-							//placeholder='Password'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>

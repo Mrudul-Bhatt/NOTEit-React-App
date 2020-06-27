@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions/user';
 import { Tooltip, Link as Zlink, Divider } from '@zeit-ui/react';
+import { baseUrl } from '../utility/helper';
 
 const Navbar = () => {
 	const respModal = useRef(null);
@@ -14,7 +15,6 @@ const Navbar = () => {
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 	const logout = () => dispatch(actions.logout());
-	//M.Sidenav.init(respModal.current);
 
 	useEffect(() => {
 		M.Sidenav.init(respModal.current);
@@ -26,7 +26,7 @@ const Navbar = () => {
 
 	const searchNotes = (query) => {
 		setSearch(query);
-		fetch('http://localhost:5000/searchnotes', {
+		fetch(`${baseUrl}/searchnotes`, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const Navbar = () => {
 		})
 			.then((res) => res.json())
 			.then((value) => {
-				console.log(value);
+				//console.log(value);
 				setNotes(value.result);
 			})
 			.catch((err) => {
@@ -55,9 +55,6 @@ const Navbar = () => {
 				style={{ color: 'black' }}
 			>
 				<div className='modal-content input-field'>
-					{/* <h4 style={{ fontFamily: "'Lato', sans-serif" }}>
-						Search notes by title...
-					</h4> */}
 					<input
 						placeholder='Search by title...'
 						id='title'
@@ -75,7 +72,6 @@ const Navbar = () => {
 											onClick={() => {
 												M.Modal.getInstance(searchModal.current).close();
 												setSearch('');
-												//setId(item._id);
 											}}
 										>
 											<li className='collection-item'>{item.title}</li>
@@ -84,10 +80,6 @@ const Navbar = () => {
 							  })
 							: null}
 					</ul>
-
-					{/* <label htmlFor='title'>Title</label> */}
-					{/* <hr />
-					<h5>This action cannot be undone</h5> */}
 				</div>
 
 				<div className='modal-footer'>
@@ -95,24 +87,12 @@ const Navbar = () => {
 						style={{ color: 'red' }}
 						className='modal-close btn-flat'
 						onClick={() => {
-							//setId(null);
 							setSearch('');
 							M.Modal.getInstance(searchModal.current).close();
 						}}
 					>
 						Cancel
 					</button>
-					{/* <button
-						style={{ color: 'red' }}
-						className='modal-close btn-flat'
-						onClick={() => {
-							//deleteNote(postid);
-							setSearch('');
-							M.Modal.getInstance(searchModal.current).close();
-						}}
-					>
-						Done
-					</button> */}
 				</div>
 			</div>
 			<nav
@@ -226,14 +206,7 @@ const Navbar = () => {
 						Add Note
 					</Link>
 				</li>
-				{/* <li>
-					<Link
-						to='/'
-						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
-					>
-						Tags
-					</Link>
-				</li> */}
+
 				<li>
 					<Link
 						to='/favnotes'

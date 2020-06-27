@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router';
 import M from 'materialize-css';
 import { Link } from 'react-router-dom';
@@ -14,10 +13,12 @@ import {
 } from '@zeit-ui/react';
 import { LinearProgress } from '@material-ui/core';
 import ReactQuill from 'react-quill';
+import { useToasts } from 'react-toast-notifications';
+import { baseUrl } from '../utility/helper';
 
 const SingleNote = () => {
+	const { addToast } = useToasts();
 	const [note, setNote] = useState(null);
-	//const user = useSelector((state) => state.user);
 	const { noteId } = useParams();
 	const [data, setData] = useState(null);
 	const [readOnly, setReadOnly] = useState(true);
@@ -29,7 +30,7 @@ const SingleNote = () => {
 
 	useEffect(() => {
 		setLoader(true);
-		fetch(`http://localhost:5000/singlenote/${noteId}`, {
+		fetch(`${baseUrl}/singlenote/${noteId}`, {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: 'Bearer ' + localStorage.getItem('jwt'),
@@ -37,12 +38,12 @@ const SingleNote = () => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data.mynote);
+				//console.log(data.mynote);
 				setNote(data.mynote);
 				setLoader(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				//console.log(error);
 				setLoader(false);
 			});
 	}, [noteId]);
@@ -53,7 +54,7 @@ const SingleNote = () => {
 
 	const favourite = () => {
 		setLikeLoader(true);
-		fetch('http://localhost:5000/favourite', {
+		fetch(`${baseUrl}/favourite`, {
 			method: 'put',
 			headers: {
 				'Content-Type': 'application/json',
@@ -65,43 +66,24 @@ const SingleNote = () => {
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
+				//console.log(response);
 				setNote(response.data);
 				setLikeLoader(false);
-				// const newData = data.map((item) => {
-				// 	if (item._id === response.data._id) {
-				// 		return response.data;
-				// 	} else {
-				// 		return item;
-				// 	}
-				// });
-
-				//setData(newData);
-				//setData(response.mynote);
-				// if (response.message) {
-				// 	addToast(response.message, { appearance: 'success' });
-				// 	setTitle('');
-				// 	setBody('');
-				// } else {
-				// 	addToast(response.error, { appearance: 'error' });
-				// }
-				// setLoader(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				//console.log(error);
 				setLikeLoader(false);
 
-				// addToast('Server is down', {
-				// 	appearance: 'error',
-				// });
-				// setLoader(false);
+				addToast('Server is down', {
+					appearance: 'error',
+				});
 			});
 	};
 
 	const unfavourite = () => {
 		setLikeLoader(true);
 
-		fetch('http://localhost:5000/unfavourite', {
+		fetch(`${baseUrl}/unfavourite`, {
 			method: 'put',
 			headers: {
 				'Content-Type': 'application/json',
@@ -113,42 +95,22 @@ const SingleNote = () => {
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
+				//console.log(response);
 				setNote(response.data);
 				setLikeLoader(false);
-
-				// const newData = data.map((item) => {
-				// 	if (item._id === response.data._id) {
-				// 		return response.data;
-				// 	} else {
-				// 		return item;
-				// 	}
-				// });
-
-				// setData(newData);
-				//setData(response.mynote);
-				// if (response.message) {
-				// 	addToast(response.message, { appearance: 'success' });
-				// 	setTitle('');
-				// 	setBody('');
-				// } else {
-				// 	addToast(response.error, { appearance: 'error' });
-				// }
-				// setLoader(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				//console.log(error);
 				setLikeLoader(false);
 
-				// addToast('Server is down', {
-				// 	appearance: 'error',
-				// });
-				// setLoader(false);
+				addToast('Server is down', {
+					appearance: 'error',
+				});
 			});
 	};
 
 	const deleteNote = () => {
-		fetch('http://localhost:5000/deletenote', {
+		fetch(`${baseUrl}/deletenote`, {
 			method: 'delete',
 			headers: {
 				'Content-Type': 'application/json',
@@ -160,34 +122,14 @@ const SingleNote = () => {
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
+				//console.log(response);
 				history.push('/');
-				// if (response.message) {
-				// 	addToast(response.message, { appearance: 'success' });
-				// }
-				// const newData = data.filter((item) => {
-				// 	if (item._id !== response.result._id) {
-				// 		return item;
-				// 	}
-				// });
-
-				// setData(newData);
-				//setData(response.mynote);
-				// if (response.message) {
-				// 	addToast(response.message, { appearance: 'success' });
-				// 	setTitle('');
-				// 	setBody('');
-				// } else {
-				// 	addToast(response.error, { appearance: 'error' });
-				// }
-				// setLoader(false);
 			})
 			.catch((error) => {
-				console.log(error);
-				// addToast('Server is down', {
-				// 	appearance: 'error',
-				// });
-				// setLoader(false);
+				//console.log(error);
+				addToast('Server is down', {
+					appearance: 'error',
+				});
 			});
 	};
 
@@ -202,10 +144,8 @@ const SingleNote = () => {
 			>
 				<div className='modal-content'>
 					<h4 style={{ fontFamily: "'Lato', sans-serif" }}>
-						Do you want to delete this note?
+						Delete this note?
 					</h4>
-					{/* <hr />
-					<h5>This action cannot be undone</h5> */}
 				</div>
 
 				<div className='modal-footer'>
@@ -247,14 +187,7 @@ const SingleNote = () => {
 						</h4>
 
 						<Divider />
-						{/* <h5
-							style={{
-								wordBreak: 'break-word',
-								fontFamily: "'Lato', sans-serif",
-							}}
-						>
-							{note.body}
-						</h5> */}
+
 						<ReactQuill value={note.body} readOnly={true} theme='bubble' />
 						<Card.Footer>
 							<Row style={{ padding: '10px' }}>
@@ -310,14 +243,6 @@ const SingleNote = () => {
 									)}
 								</Col>
 							</Row>
-
-							{/* <ZLink
-								color
-								target='_blank'
-								href='https://github.com/zeit-ui/react'
-							>
-								Visit source code on GitHub.
-							</ZLink> */}
 						</Card.Footer>
 					</Card>
 				</Row>

@@ -5,11 +5,10 @@ import { LinearProgress, Link as Mlink } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 //import { useToasts, Loading, Spinner } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
-import { emailRegex } from '../regex';
+import { emailRegex, baseUrl } from '../utility/helper';
 //import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const SignUp = () => {
-	//const classes = useStyles();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -17,7 +16,6 @@ const SignUp = () => {
 	const [loader, setLoader] = useState(false);
 
 	const signup = () => {
-		//console.log('signin start');
 		let flag = 0;
 		setLoader(true);
 
@@ -42,7 +40,7 @@ const SignUp = () => {
 			return;
 		}
 
-		fetch('http://localhost:5000/signup', {
+		fetch(`${baseUrl}/signup`, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -55,7 +53,7 @@ const SignUp = () => {
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
+				//console.log(response);
 				if (response.message) {
 					addToast(response.message, { appearance: 'success' });
 				} else {
@@ -64,7 +62,7 @@ const SignUp = () => {
 				setLoader(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				//console.log(error);
 				addToast('Server is down', {
 					appearance: 'error',
 				});
@@ -79,8 +77,6 @@ const SignUp = () => {
 			<div className='mycard'>
 				<div className='card auth-card input-field z-depth-0'>
 					<div>
-						{/* <i className='material-icons'>account_circle</i> */}
-
 						<h2 style={{ color: '#008cba' }}>Sign Up</h2>
 					</div>
 					<div className='input-field'>
@@ -88,7 +84,6 @@ const SignUp = () => {
 							id='name'
 							className='validate'
 							type='text'
-							//placeholder='Email'
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 						/>
@@ -99,7 +94,6 @@ const SignUp = () => {
 							id='email'
 							className='validate'
 							type='email'
-							//placeholder='Email'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
@@ -110,7 +104,6 @@ const SignUp = () => {
 							id='password'
 							type='password'
 							className='validate'
-							//placeholder='Password'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>

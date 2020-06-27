@@ -1,24 +1,24 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { CssBaseline } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
 //import { toast } from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
 import { LinearProgress } from '@material-ui/core';
 import ReactQuill from 'react-quill';
+import { baseUrl } from '../utility/helper';
+import moment from 'moment';
 
 //toast.configure();
 
 const AddNote = () => {
 	const [title, setTitle] = useState('');
 	const [body, setBody] = useState('');
-	const [bold, setBold] = useState(false);
 	const { addToast } = useToasts();
 	const [loader, setLoader] = useState(false);
 
 	const addNote = () => {
 		setLoader(true);
-		fetch('http://localhost:5000/createnote', {
+		var date = moment().format('lll').toString();
+		fetch(`${baseUrl}/createnote`, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -27,6 +27,7 @@ const AddNote = () => {
 			body: JSON.stringify({
 				title,
 				body,
+				date,
 			}),
 		})
 			.then((res) => res.json())
@@ -34,7 +35,6 @@ const AddNote = () => {
 				console.log(response);
 				if (response.message) {
 					addToast(response.message, { appearance: 'success' });
-
 					setTitle('');
 					setBody('');
 				} else {
@@ -45,7 +45,6 @@ const AddNote = () => {
 			.catch((error) => {
 				console.log(error);
 				addToast('Server is down', { appearance: 'error' });
-
 				setLoader(false);
 			});
 	};
@@ -53,44 +52,9 @@ const AddNote = () => {
 	return (
 		<div className='row'>
 			{loader ? <LinearProgress style={{ width: '100%' }} /> : null}
-			{/* <div className='col s12 '>
-					<div className='card blue-grey darken-1'>
-						<div className='card-action'>
-							<a href='#'>
-								<i
-									className='material-icons'
-									onClick={() => setBold(!bold)}
-									style={bold ? { color: 'blue' } : null}
-								>
-									format_bold
-								</i>
-							</a>
-							<a href='#'>
-								<i className='material-icons' style={{ color: 'blue' }}>
-									format_bold
-								</i>
-							</a>
-							<a href='#'>
-								<i className='material-icons' style={{ color: 'blue' }}>
-									format_italic
-								</i>
-							</a>
-						</div>
-					</div>
-				</div> */}
 			<div className='col s12'>
 				<div className='row'>
 					<div className='input-field col s12'>
-						{/* <i className='material-icons prefix'>title</i>
-						<br /> */}
-
-						{/* <ReactQuill
-							value={title}
-							onChange={(val) => setTitle(val)}
-							placeholder='Title'
-							// readOnly='true'
-							// theme='bubble'
-						/> */}
 						<input
 							placeholder='Title'
 							id='title'
@@ -98,26 +62,12 @@ const AddNote = () => {
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 						/>
-						{/* <label htmlFor='title'>Title</label> */}
 					</div>
 					<div className='input-field col s12'>
-						{/* <i className='material-icons prefix'>note</i> */}
-
-						{/* <i className='material-icons prefix'>note</i>
-						<textarea
-							id='textarea1'
-							className='materialize-textarea'
-							value={body}
-							onChange={(e) => setBody(e.target.value)}
-						></textarea>
-						<label htmlFor='textarea1'>Take a note...</label> */}
 						<ReactQuill
 							value={body}
 							onChange={(val) => setBody(val)}
 							placeholder='Take a note...'
-
-							// readOnly='true'
-							// theme='bubble'
 						/>
 					</div>
 					<div className='row' style={{ padding: '10px' }}>
@@ -134,37 +84,3 @@ const AddNote = () => {
 };
 
 export default AddNote;
-
-// import React, { useState } from 'react';
-// import ReactQuill from 'react-quill';
-// import { Link } from 'react-router-dom';
-// import { useToasts } from 'react-toast-notifications';
-// import { LinearProgress } from '@material-ui/core';
-
-// const AddNote = () => {
-// 	const [title, setTitle] = useState('');
-// 	const [body, setBody] = useState('');
-// 	const { addToast } = useToasts();
-
-// 	return (
-// 		<div>
-// 			<input
-// 				id='title'
-// 				type='text'
-// 				value={title}
-// 				onChange={(e) => setTitle(e.target.value)}
-// 			/>
-// 			<label htmlFor='title'>Title</label>
-// 			<ReactQuill
-// 				// readOnly='true'
-// 				// theme='bubble'
-// 				value={body}
-// 				style={{ height: '200px', padding: '30px' }}
-// 				onChange={(val) => setBody(val)}
-// 			></ReactQuill>
-// 			<button onClick={() => addNote()}>+Note</button>
-// 		</div>
-// 	);
-// };
-
-// export default AddNote;
