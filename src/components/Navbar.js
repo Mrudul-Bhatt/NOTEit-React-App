@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import M from 'materialize-css';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions/user';
-import { Tooltip } from '@zeit-ui/react';
+import { Tooltip, Link as Zlink, Divider } from '@zeit-ui/react';
 
 const Navbar = () => {
 	const respModal = useRef(null);
+	const searchModal = useRef(null);
+	const [search, setSearch] = useState('');
+	const [notes, setNotes] = useState([]);
 	const history = useHistory();
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
@@ -17,8 +20,101 @@ const Navbar = () => {
 		M.Sidenav.init(respModal.current);
 	}, []);
 
+	useEffect(() => {
+		M.Modal.init(searchModal.current);
+	}, []);
+
+	const searchNotes = (query) => {
+		setSearch(query);
+		fetch('http://localhost:5000/searchnotes', {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+			},
+			body: JSON.stringify({
+				query,
+			}),
+		})
+			.then((res) => res.json())
+			.then((value) => {
+				console.log(value);
+				setNotes(value.result);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	return (
 		<div>
+			<div
+				id='search'
+				className='modal'
+				ref={searchModal}
+				style={{ color: 'black' }}
+			>
+				<div className='modal-content input-field'>
+					{/* <h4 style={{ fontFamily: "'Lato', sans-serif" }}>
+						Search notes by title...
+					</h4> */}
+					<input
+						placeholder='Search by title...'
+						id='title'
+						type='text'
+						value={search}
+						onChange={(e) => searchNotes(e.target.value)}
+					/>
+					<ul className='collection'>
+						{notes
+							? notes.map((item) => {
+									return (
+										<Link
+											key={item._id}
+											to={'/singlenote/' + item._id}
+											onClick={() => {
+												M.Modal.getInstance(searchModal.current).close();
+												setSearch('');
+												//setId(item._id);
+											}}
+										>
+											<li className='collection-item'>{item.title}</li>
+										</Link>
+									);
+							  })
+							: null}
+					</ul>
+
+					{/* <label htmlFor='title'>Title</label> */}
+					{/* <hr />
+					<h5>This action cannot be undone</h5> */}
+				</div>
+
+				<div className='modal-footer'>
+					<button
+						style={{ color: 'red' }}
+						className='modal-close btn-flat'
+						onClick={() => {
+							//setId(null);
+							setSearch('');
+							M.Modal.getInstance(searchModal.current).close();
+						}}
+					>
+						Cancel
+					</button>
+					{/* <button
+						style={{ color: 'red' }}
+						className='modal-close btn-flat'
+						onClick={() => {
+							//deleteNote(postid);
+							setSearch('');
+							M.Modal.getInstance(searchModal.current).close();
+						}}
+					>
+						Done
+					</button> */}
+				</div>
+			</div>
 			<nav
 				style={{
 					backgroundColor: '#008cba',
@@ -39,9 +135,18 @@ const Navbar = () => {
 							<i className='material-icons'>menu</i>
 						</a>
 					) : null}
+
 					<ul className='right hide-on-med-and-down'>
 						{user ? (
 							<div>
+								<li>
+									<i
+										data-target='search'
+										className='material-icons modal-trigger'
+									>
+										search
+									</i>
+								</li>
 								<li>
 									<Tooltip text={'My notes'}>
 										<Link to='/'>
@@ -56,9 +161,7 @@ const Navbar = () => {
 										</Link>
 									</Tooltip>
 								</li>
-								{/* <li>
-									<Link to='/'>Tags</Link>
-								</li> */}
+
 								<li>
 									<Tooltip text={'Favourite notes'}>
 										<Link to='/favnotes'>
@@ -95,6 +198,17 @@ const Navbar = () => {
 				style={{ background: '#008cba', paddingTop: '40px' }}
 			>
 				<li>
+					<a
+						href='#'
+						data-target='search'
+						className='modal-trigger'
+						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
+					>
+						<i className='material-icons'>search</i>
+						Search
+					</a>
+				</li>
+				<li>
 					<Link
 						to='/'
 						onClick={() => M.Sidenav.getInstance(respModal.current).close()}
@@ -129,6 +243,7 @@ const Navbar = () => {
 						Favourites
 					</Link>
 				</li>
+
 				<li>
 					<a
 						href='#'

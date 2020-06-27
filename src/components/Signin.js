@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 //import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 //import { useToasts, Loading, Spinner, Button } from '@zeit-ui/react';
+import { LinearProgress, Link as Mlink } from '@material-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import * as actions from '../store/actions/user';
 
@@ -16,6 +17,7 @@ const SignIn = () => {
 	const signin = (email, password) => dispatch(actions.signin(email, password));
 	const notifyE = useSelector((state) => state.notifyE);
 	const notifyM = useSelector((state) => state.notifyM);
+	const loading = useSelector((state) => state.loading);
 	const click = useSelector((state) => state.click);
 	const cleanup = () => dispatch(actions.cleanup());
 
@@ -46,10 +48,11 @@ const SignIn = () => {
 
 	return (
 		<div>
+			{loading ? <LinearProgress /> : null}
 			<div className='mycard '>
 				<div className='card auth-card input-field z-depth-0'>
 					<div>
-						<i className='medium material-icons'>account_circle</i>
+						{/* <i className='material-icons'>account_circle</i> */}
 						<h2 style={{ color: '#008cba' }}>Sign In</h2>
 					</div>
 					<div className='input-field'>
@@ -77,15 +80,9 @@ const SignIn = () => {
 					<button className='button button2' onClick={() => signinHandler()}>
 						Sign In
 					</button>
-					<div
-						style={{
-							color: '#008cba',
-							backgroundColor: '#008cba',
-							padding: '10px',
-						}}
-					>
+					<Mlink>
 						<Link to='/signup'>Don't have an account? Sign Up</Link>
-					</div>
+					</Mlink>
 				</div>
 			</div>
 		</div>

@@ -4,6 +4,7 @@ import { useParams, useHistory } from 'react-router';
 import { Button, LinearProgress } from '@material-ui/core';
 import M from 'materialize-css';
 import { useToasts } from 'react-toast-notifications';
+import ReactQuill from 'react-quill';
 
 const UpdateNote = () => {
 	const [note, setNote] = useState(null);
@@ -168,7 +169,7 @@ const UpdateNote = () => {
 			{loader ? <LinearProgress style={{ width: '100%' }} /> : null}
 			{note ? (
 				<div className='row'>
-					<div className='col s12 '>
+					{/* <div className='col s12 '>
 						<div className='card blue-grey darken-1'>
 							<div className='card-action'>
 								<a href='#'>
@@ -188,21 +189,24 @@ const UpdateNote = () => {
 								</a>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className='col s12'>
 						<div className='row'>
 							<div className='input-field col s12'>
-								<i className='material-icons prefix'>title</i>
+								{/* <i className='material-icons prefix'>title</i> */}
 								<input
+									placeholder='Title'
 									id='title'
 									type='text'
 									value={title}
 									onChange={(e) => setTitle(e.target.value)}
 								/>
-								<label htmlFor='title'>Title</label>
+								{/* <label htmlFor='title'>Title</label> */}
+								{/* <ReactQuill value={title} onChange={(val) => setTitle(val)} /> */}
 							</div>
 							<div className='input-field col s12'>
-								<i className='material-icons prefix'>note</i>
+								<ReactQuill value={body} onChange={(val) => setBody(val)} />
+								{/* <i className='material-icons prefix'>note</i>
 
 								<textarea
 									id='textarea1'
@@ -210,7 +214,7 @@ const UpdateNote = () => {
 									value={body}
 									onChange={(e) => setBody(e.target.value)}
 								></textarea>
-								<label htmlFor='textarea1'>Take a note...</label>
+								<label htmlFor='textarea1'>Take a note...</label> */}
 							</div>
 							<div className='row' style={{ padding: '10px' }}>
 								<div className='col right s4 m2'>

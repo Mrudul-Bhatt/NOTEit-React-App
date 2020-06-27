@@ -8,7 +8,15 @@ import { useToasts } from 'react-toast-notifications';
 import * as actions from '../store/actions/user';
 import M from 'materialize-css';
 import { LinearProgress, Divider } from '@material-ui/core';
-import { Tooltip } from '@zeit-ui/react';
+import {
+	Tooltip,
+	Link as Zlink,
+	Row,
+	Col,
+	Card,
+	Spinner,
+	Loading,
+} from '@zeit-ui/react';
 
 const FavNotes = () => {
 	const dispatch = useDispatch();
@@ -193,100 +201,246 @@ const FavNotes = () => {
 			{data ? (
 				data.map((item) => {
 					return (
-						<div
-							className='col s12 '
-							style={{ padding: '0px 40px' }}
+						// <div
+						// 	className='col s12 '
+						// 	style={{ padding: '0px 40px' }}
+						// 	key={item ? item._id : null}
+						// >
+						// 	<div className='card white darken-1 z-depth-3'>
+						// 		<div className='card-content black-text'>
+						// 			<span
+						// 				className='card-title'
+						// 				style={{ fontFamily: "'Sriracha', cursive" }}
+						// 			>
+						// 				<h4>
+						// 					{item
+						// 						? item.title.length > 10
+						// 							? item.title.substring(0, 10) + '...'
+						// 							: item.title
+						// 						: null}
+						// 				</h4>
+						// 			</span>
+						// 			<h5 style={{ fontFamily: "'Lato', sans-serif" }}>
+						// 				{item
+						// 					? item.body.length > 10
+						// 						? item.body.substring(0, 10) + '...'
+						// 						: item.body
+						// 					: null}
+						// 			</h5>
+						// 		</div>
+						// 		<Divider />
+						// 		{/* <div className='card-action'> */}
+						// 		<div
+						// 			className='row'
+						// 			style={{
+						// 				margin: '5px',
+						// 				padding: '5px',
+						// 			}}
+						// 		>
+						// 			<div className='col right s3 m2'>
+						// 				{/* <button className='button button2'>View</button> */}
+						// 				<Tooltip text={'View note'}>
+						// 					<Link to={'/singlenote/' + item._id}>
+						// 						<i className='material-icons' style={{ color: 'blue' }}>
+						// 							visibility
+						// 						</i>
+						// 					</Link>
+						// 				</Tooltip>
+						// 			</div>
+						// 			<div className='col right s3 m2'>
+						// 				{/* <button className='button button2'>Update</button> */}
+						// 				<Tooltip text={'Edit note'}>
+						// 					<Link to={'/updatenote/' + item._id}>
+						// 						<i
+						// 							className='material-icons'
+						// 							style={{ color: 'green' }}
+						// 						>
+						// 							edit
+						// 						</i>
+						// 					</Link>
+						// 				</Tooltip>
+						// 			</div>
+						// 			<div className='col right s3 m2'>
+						// 				{/* <button className='button button2' style={{}}>
+						// 					Delete
+						// 				</button> */}
+						// 				{/* <i className='material-icons' style={{ color: 'red' }}>
+						// 					delete
+						// 				</i> */}
+						// 				<Tooltip text={'Delete note'}>
+						// 					<i
+						// 						data-target='modal2'
+						// 						className='material-icons modal-trigger'
+						// 						onClick={() => {
+						// 							setId(item._id);
+						// 						}}
+						// 						style={{ color: 'red' }}
+						// 					>
+						// 						delete
+						// 					</i>
+						// 				</Tooltip>
+						// 			</div>
+						// 			<div className='col right s3 m2'>
+						// 				{/* <button className='button button2'  onClick={() => favourite(item._id)} >Fav</button> */}
+						// 				<Tooltip text={'Remove from favourite'}>
+						// 					<i
+						// 						className='material-icons'
+						// 						onClick={() => unfavourite(item._id)}
+						// 						style={{ color: 'yellow' }}
+						// 					>
+						// 						favorite
+						// 					</i>
+						// 				</Tooltip>
+						// 			</div>
+						// 		</div>
+						// 	</div>
+						// </div>
+						<Row
+							style={{ flexWrap: 'wrap', padding: '20px', width: '100%' }}
+							justify='space-around'
 							key={item ? item._id : null}
 						>
-							<div className='card white darken-1 z-depth-3'>
-								<div className='card-content black-text'>
-									<span
-										className='card-title'
-										style={{ fontFamily: "'Sriracha', cursive" }}
-									>
-										<h4>
-											{item
-												? item.title.length > 10
-													? item.title.substring(0, 10) + '...'
-													: item.title
-												: null}
-										</h4>
-									</span>
-									<h5 style={{ fontFamily: "'Lato', sans-serif" }}>
-										{item
-											? item.body.length > 10
-												? item.body.substring(0, 10) + '...'
-												: item.body
-											: null}
-									</h5>
-								</div>
-								<Divider />
-								{/* <div className='card-action'> */}
+							<Card width='100%'>
 								<div
-									className='row'
 									style={{
-										margin: '5px',
-										padding: '5px',
+										display: 'flex',
+										justifyContent: 'space-around',
+										justifyItems: 'space-around',
 									}}
 								>
-									<div className='col right s3 m2'>
-										{/* <button className='button button2'>View</button> */}
-										<Tooltip text={'View note'}>
-											<Link to={'/singlenote/' + item._id}>
-												<i className='material-icons' style={{ color: 'blue' }}>
-													visibility
-												</i>
-											</Link>
-										</Tooltip>
-									</div>
-									<div className='col right s3 m2'>
-										{/* <button className='button button2'>Update</button> */}
-										<Tooltip text={'Edit note'}>
-											<Link to={'/updatenote/' + item._id}>
-												<i
-													className='material-icons'
-													style={{ color: 'green' }}
-												>
-													edit
-												</i>
-											</Link>
-										</Tooltip>
-									</div>
-									<div className='col right s3 m2'>
-										{/* <button className='button button2' style={{}}>
-											Delete
-										</button> */}
-										{/* <i className='material-icons' style={{ color: 'red' }}>
-											delete
-										</i> */}
-										<Tooltip text={'Delete note'}>
-											<i
-												data-target='modal2'
-												className='material-icons modal-trigger'
-												onClick={() => {
-													setId(item._id);
-												}}
-												style={{ color: 'red' }}
-											>
-												delete
+									<div style={{ display: 'flex' }}>
+										<Tooltip text={'Created at'}>
+											<i className='material-icons' style={{ color: 'blue' }}>
+												access_time
 											</i>
 										</Tooltip>
+										{item.dateCreated}
 									</div>
-									<div className='col right s3 m2'>
-										{/* <button className='button button2'  onClick={() => favourite(item._id)} >Fav</button> */}
-										<Tooltip text={'Remove from favourite'}>
-											<i
-												className='material-icons'
-												onClick={() => unfavourite(item._id)}
-												style={{ color: 'yellow' }}
-											>
-												favorite
+									<div style={{ display: 'flex' }}>
+										<Tooltip text={'Last updated'}>
+											<i className='material-icons' style={{ color: 'green' }}>
+												update
 											</i>
 										</Tooltip>
+										{item.dateUpdated}
 									</div>
 								</div>
-							</div>
-						</div>
+								<Divider />
+								<h4
+									style={{
+										wordBreak: 'break-word',
+										fontFamily: "'Sriracha', cursive",
+										textAlign: 'center',
+									}}
+								>
+									<Zlink color underline>
+										<Link to={'/singlenote/' + item._id}>
+											{item.title.length > 12
+												? item.title.substring(0, 12) + '...'
+												: item.title}
+										</Link>
+									</Zlink>
+								</h4>
+
+								<Divider />
+								{/* <h5
+						style={{
+							wordBreak: 'break-word',
+							fontFamily: "'Lato', sans-serif",
+						}}
+					>
+						{note.body}
+					</h5> */}
+								{/* <ReactQuill value={note.body} readOnly={true} theme='bubble' /> */}
+								<Card.Footer>
+									<Row
+										align='middle'
+										style={{
+											padding: '10px',
+											textAlign: 'center',
+											alignContent: 'center',
+											alignItems: 'center',
+											alignSelf: 'center',
+										}}
+									>
+										<Col>
+											<Tooltip text={'Edit note'}>
+												<Link to={'/updatenote/' + item._id}>
+													<i
+														className='material-icons'
+														style={{ color: 'green' }}
+													>
+														edit
+													</i>
+												</Link>
+											</Tooltip>
+										</Col>
+
+										<Col>
+											<Tooltip text={'Delete note'}>
+												<i
+													data-target='modal2'
+													className='material-icons modal-trigger'
+													style={{ color: 'red' }}
+													onClick={() => {
+														setId(item._id);
+													}}
+												>
+													delete
+												</i>
+											</Tooltip>
+										</Col>
+										<Col>
+											{/* {item.favourite ? (
+											<Tooltip text={'Remove from favourite'}>
+												{likeLoader && item._id === likeLoaderId ? (
+													<Spinner />
+												) : (
+													<i
+														className='material-icons'
+														onClick={() => unfavourite(item._id)}
+														style={{ color: 'yellow' }}
+													>
+														favorite
+													</i>
+												)}
+											</Tooltip>
+										) : (
+											<Tooltip text={'Add to favourite'}>
+												{likeLoader && item._id === likeLoaderId ? (
+													<Spinner />
+												) : (
+													<i
+														className='material-icons'
+														onClick={() => favourite(item._id)}
+													>
+														favorite_border
+													</i>
+												)}
+											</Tooltip>
+										)} */}
+											<Tooltip text={'Remove from favourite'}>
+												<i
+													className='material-icons'
+													onClick={() => unfavourite(item._id)}
+													style={{ color: 'yellow' }}
+												>
+													favorite
+												</i>
+											</Tooltip>
+										</Col>
+									</Row>
+
+									{/* <ZLink
+							color
+							target='_blank'
+							href='https://github.com/zeit-ui/react'
+						>
+							Visit source code on GitHub.
+						</ZLink> */}
+								</Card.Footer>
+							</Card>
+						</Row>
 					);
 				})
 			) : (

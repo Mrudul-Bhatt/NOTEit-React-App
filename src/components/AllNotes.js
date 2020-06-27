@@ -7,8 +7,16 @@ import { Link } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import * as actions from '../store/actions/user';
 import M from 'materialize-css';
-import { LinearProgress, Divider } from '@material-ui/core';
-import { Tooltip } from '@zeit-ui/react';
+import { LinearProgress, Divider, CircularProgress } from '@material-ui/core';
+import {
+	Tooltip,
+	Link as Zlink,
+	Row,
+	Col,
+	Card,
+	Spinner,
+	Loading,
+} from '@zeit-ui/react';
 
 const AllNotes = () => {
 	const dispatch = useDispatch();
@@ -21,6 +29,8 @@ const AllNotes = () => {
 	const cleanup = () => dispatch(actions.cleanup());
 	const [data, setData] = useState([]);
 	const [loader, setLoader] = useState(false);
+	const [likeLoader, setLikeLoader] = useState(false);
+	const [likeLoaderId, setLikeLoaderId] = useState(null);
 
 	useEffect(() => {
 		setLoader(true);
@@ -74,6 +84,8 @@ const AllNotes = () => {
 	}, []);
 
 	const favourite = (id) => {
+		setLikeLoaderId(id);
+		setLikeLoader(true);
 		fetch('http://localhost:5000/favourite', {
 			method: 'put',
 			headers: {
@@ -96,6 +108,9 @@ const AllNotes = () => {
 				});
 
 				setData(newData);
+				setLikeLoader(false);
+				setLikeLoaderId(null);
+
 				//setData(response.mynote);
 				// if (response.message) {
 				// 	addToast(response.message, { appearance: 'success' });
@@ -108,6 +123,9 @@ const AllNotes = () => {
 			})
 			.catch((error) => {
 				console.log(error);
+				setLikeLoader(false);
+				setLikeLoaderId(null);
+
 				// addToast('Server is down', {
 				// 	appearance: 'error',
 				// });
@@ -116,6 +134,10 @@ const AllNotes = () => {
 	};
 
 	const unfavourite = (id) => {
+		setLikeLoaderId(id);
+
+		setLikeLoader(true);
+
 		fetch('http://localhost:5000/unfavourite', {
 			method: 'put',
 			headers: {
@@ -138,6 +160,9 @@ const AllNotes = () => {
 				});
 
 				setData(newData);
+				setLikeLoader(false);
+				setLikeLoaderId(null);
+
 				//setData(response.mynote);
 				// if (response.message) {
 				// 	addToast(response.message, { appearance: 'success' });
@@ -150,6 +175,9 @@ const AllNotes = () => {
 			})
 			.catch((error) => {
 				console.log(error);
+				setLikeLoader(false);
+				setLikeLoaderId(null);
+
 				// addToast('Server is down', {
 				// 	appearance: 'error',
 				// });
@@ -201,8 +229,8 @@ const AllNotes = () => {
 	};
 
 	return (
-		<>
-			{loader && <LinearProgress style={{ width: '100%' }} />}
+		<div>
+			{loader ? <LinearProgress style={{ width: '100%' }} /> : null}
 			<div
 				id='modal1'
 				className='modal'
@@ -244,114 +272,148 @@ const AllNotes = () => {
 			{data ? (
 				data.map((item) => {
 					return (
-						<div
-							className='col s12 z-depth-0'
-							style={{ padding: '0px 40px' }}
+						<Row
+							style={{ flexWrap: 'wrap', padding: '20px', width: '100%' }}
+							justify='space-around'
 							key={item._id}
 						>
-							<div className='card white darken-1 z-depth-3'>
-								<div className='card-content black-text'>
-									<span
-										className='card-title'
-										style={{ fontFamily: "'Sriracha', cursive" }}
-									>
-										<h4>
-											{item.title.length > 10
-												? item.title.substring(0, 10) + '...'
-												: item.title}
-										</h4>
-									</span>
-									<h5 style={{ fontFamily: "'Lato', sans-serif" }}>
-										{item.body.length > 10
-											? item.body.substring(0, 10) + '...'
-											: item.body}
-									</h5>
-								</div>
-								<Divider />
-								{/* <div className='card-action'> */}
+							<Card width='100%'>
 								<div
-									className='row'
 									style={{
-										margin: '5px',
-										padding: '5px',
+										display: 'flex',
+										justifyContent: 'space-around',
+										justifyItems: 'space-around',
 									}}
 								>
-									<div className='col right s3 m2'>
-										<Tooltip text={'View note'}>
-											{/* <button className='button button2'>View</button> */}
-											<Link to={'/singlenote/' + item._id}>
-												<i className='material-icons' style={{ color: 'blue' }}>
-													visibility
-												</i>
-											</Link>
-										</Tooltip>
-									</div>
-
-									<div className='col right s3 m2'>
-										<Tooltip text={'Edit note'}>
-											{/* <button className='button button2'>Update</button> */}
-											<Link to={'/updatenote/' + item._id}>
-												<i
-													className='material-icons'
-													style={{ color: 'green' }}
-												>
-													edit
-												</i>
-											</Link>
-										</Tooltip>
-									</div>
-									<div className='col right s3 m2'>
-										{/* <button className='button button2' style={{}}>
-											Delete
-										</button> */}
-										{/* <i className='material-icons' style={{ color: 'red' }}>
-											delete
-										</i> */}
-										<Tooltip text={'Delete note'}>
-											<i
-												data-target='modal1'
-												className='material-icons modal-trigger'
-												onClick={() => {
-													setId(item._id);
-												}}
-												style={{ color: 'red' }}
-											>
-												delete
+									<div style={{ display: 'flex' }}>
+										<Tooltip text={'Created at'}>
+											<i className='material-icons' style={{ color: 'blue' }}>
+												access_time
 											</i>
 										</Tooltip>
+										{item.dateCreated}
 									</div>
-									<div className='col right s3 m2'>
-										{/* <button className='button button2'  onClick={() => favourite(item._id)} >Fav</button> */}
-										{item.favourite ? (
-											<Tooltip text={'Remove from favourite'}>
-												<i
-													className='material-icons'
-													onClick={() => unfavourite(item._id)}
-													style={{ color: 'yellow' }}
-												>
-													favorite
-												</i>
-											</Tooltip>
-										) : (
-											<Tooltip text={'Add to favourite'}>
-												<i
-													className='material-icons'
-													onClick={() => favourite(item._id)}
-												>
-													favorite_border
-												</i>
-											</Tooltip>
-										)}
+									<div style={{ display: 'flex' }}>
+										<Tooltip text={'Last updated'}>
+											<i className='material-icons' style={{ color: 'green' }}>
+												update
+											</i>
+										</Tooltip>
+										{item.dateUpdated}
 									</div>
 								</div>
-							</div>
-						</div>
+								<Divider />
+								<h4
+									style={{
+										wordBreak: 'break-word',
+										fontFamily: "'Sriracha', cursive",
+										textAlign: 'center',
+									}}
+								>
+									<Zlink color underline>
+										<Link to={'/singlenote/' + item._id}>
+											{item.title.length > 12
+												? item.title.substring(0, 12) + '...'
+												: item.title}
+										</Link>
+									</Zlink>
+								</h4>
+
+								{/* <h5
+							style={{
+								wordBreak: 'break-word',
+								fontFamily: "'Lato', sans-serif",
+							}}
+						>
+							{note.body}
+						</h5> */}
+								{/* <ReactQuill value={note.body} readOnly={true} theme='bubble' /> */}
+								<Card.Footer>
+									<Row
+										align='middle'
+										style={{
+											padding: '10px',
+											textAlign: 'center',
+											alignContent: 'center',
+											alignItems: 'center',
+											alignSelf: 'center',
+										}}
+									>
+										<Col>
+											<Tooltip text={'Edit note'}>
+												<Link to={'/updatenote/' + item._id}>
+													<i
+														className='material-icons'
+														style={{ color: 'green' }}
+													>
+														edit
+													</i>
+												</Link>
+											</Tooltip>
+										</Col>
+
+										<Col>
+											<Tooltip text={'Delete note'}>
+												<i
+													data-target='modal1'
+													className='material-icons modal-trigger'
+													style={{ color: 'red' }}
+													onClick={() => {
+														setId(item._id);
+													}}
+												>
+													delete
+												</i>
+											</Tooltip>
+										</Col>
+										<Col>
+											{item.favourite ? (
+												<Tooltip text={'Remove from favourite'}>
+													{likeLoader && item._id === likeLoaderId ? (
+														<Spinner />
+													) : (
+														<i
+															className='material-icons'
+															onClick={() => unfavourite(item._id)}
+															style={{ color: 'yellow' }}
+														>
+															favorite
+														</i>
+													)}
+												</Tooltip>
+											) : (
+												<Tooltip text={'Add to favourite'}>
+													{likeLoader && item._id === likeLoaderId ? (
+														<Spinner />
+													) : (
+														<i
+															className='material-icons'
+															onClick={() => favourite(item._id)}
+														>
+															favorite_border
+														</i>
+													)}
+												</Tooltip>
+											)}
+										</Col>
+									</Row>
+
+									{/* <ZLink
+								color
+								target='_blank'
+								href='https://github.com/zeit-ui/react'
+							>
+								Visit source code on GitHub.
+							</ZLink> */}
+								</Card.Footer>
+							</Card>
+						</Row>
 					);
 				})
 			) : (
 				<h1>You Have No Notes Yet!</h1>
 			)}
-		</>
+		</div>
 	);
 };
 

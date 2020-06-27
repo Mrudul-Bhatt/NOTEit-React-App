@@ -2,7 +2,12 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CssBaseline } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
+//import { toast } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
 import { LinearProgress } from '@material-ui/core';
+import ReactQuill from 'react-quill';
+
+//toast.configure();
 
 const AddNote = () => {
 	const [title, setTitle] = useState('');
@@ -29,6 +34,7 @@ const AddNote = () => {
 				console.log(response);
 				if (response.message) {
 					addToast(response.message, { appearance: 'success' });
+
 					setTitle('');
 					setBody('');
 				} else {
@@ -38,9 +44,8 @@ const AddNote = () => {
 			})
 			.catch((error) => {
 				console.log(error);
-				addToast('Server is down', {
-					appearance: 'error',
-				});
+				addToast('Server is down', { appearance: 'error' });
+
 				setLoader(false);
 			});
 	};
@@ -76,25 +81,44 @@ const AddNote = () => {
 			<div className='col s12'>
 				<div className='row'>
 					<div className='input-field col s12'>
-						<i className='material-icons prefix'>title</i>
+						{/* <i className='material-icons prefix'>title</i>
+						<br /> */}
 
+						{/* <ReactQuill
+							value={title}
+							onChange={(val) => setTitle(val)}
+							placeholder='Title'
+							// readOnly='true'
+							// theme='bubble'
+						/> */}
 						<input
+							placeholder='Title'
 							id='title'
 							type='text'
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 						/>
-						<label htmlFor='title'>Title</label>
+						{/* <label htmlFor='title'>Title</label> */}
 					</div>
 					<div className='input-field col s12'>
-						<i className='material-icons prefix'>note</i>
+						{/* <i className='material-icons prefix'>note</i> */}
+
+						{/* <i className='material-icons prefix'>note</i>
 						<textarea
 							id='textarea1'
 							className='materialize-textarea'
 							value={body}
 							onChange={(e) => setBody(e.target.value)}
 						></textarea>
-						<label htmlFor='textarea1'>Take a note...</label>
+						<label htmlFor='textarea1'>Take a note...</label> */}
+						<ReactQuill
+							value={body}
+							onChange={(val) => setBody(val)}
+							placeholder='Take a note...'
+
+							// readOnly='true'
+							// theme='bubble'
+						/>
 					</div>
 					<div className='row' style={{ padding: '10px' }}>
 						<div className='col right s4 m2'>
@@ -102,11 +126,6 @@ const AddNote = () => {
 								+Note
 							</button>
 						</div>
-						{/* <div className='col right s4 m2'>
-							<button className='button button2' onClick={() => addNote()}>
-								+Tag
-							</button>
-						</div> */}
 					</div>
 				</div>
 			</div>
@@ -115,3 +134,37 @@ const AddNote = () => {
 };
 
 export default AddNote;
+
+// import React, { useState } from 'react';
+// import ReactQuill from 'react-quill';
+// import { Link } from 'react-router-dom';
+// import { useToasts } from 'react-toast-notifications';
+// import { LinearProgress } from '@material-ui/core';
+
+// const AddNote = () => {
+// 	const [title, setTitle] = useState('');
+// 	const [body, setBody] = useState('');
+// 	const { addToast } = useToasts();
+
+// 	return (
+// 		<div>
+// 			<input
+// 				id='title'
+// 				type='text'
+// 				value={title}
+// 				onChange={(e) => setTitle(e.target.value)}
+// 			/>
+// 			<label htmlFor='title'>Title</label>
+// 			<ReactQuill
+// 				// readOnly='true'
+// 				// theme='bubble'
+// 				value={body}
+// 				style={{ height: '200px', padding: '30px' }}
+// 				onChange={(val) => setBody(val)}
+// 			></ReactQuill>
+// 			<button onClick={() => addNote()}>+Note</button>
+// 		</div>
+// 	);
+// };
+
+// export default AddNote;

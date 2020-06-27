@@ -10,17 +10,22 @@ import {
 	Divider,
 	Col,
 	Tooltip,
+	Spinner,
 } from '@zeit-ui/react';
 import { LinearProgress } from '@material-ui/core';
+import ReactQuill from 'react-quill';
 
 const SingleNote = () => {
 	const [note, setNote] = useState(null);
 	//const user = useSelector((state) => state.user);
 	const { noteId } = useParams();
 	const [data, setData] = useState(null);
+	const [readOnly, setReadOnly] = useState(true);
+	const [theme, setTheme] = useState('bubble');
 	const history = useHistory();
 	const deleteModal = useRef(null);
 	const [loader, setLoader] = useState(false);
+	const [likeLoader, setLikeLoader] = useState(false);
 
 	useEffect(() => {
 		setLoader(true);
@@ -47,6 +52,7 @@ const SingleNote = () => {
 	}, []);
 
 	const favourite = () => {
+		setLikeLoader(true);
 		fetch('http://localhost:5000/favourite', {
 			method: 'put',
 			headers: {
@@ -61,6 +67,7 @@ const SingleNote = () => {
 			.then((response) => {
 				console.log(response);
 				setNote(response.data);
+				setLikeLoader(false);
 				// const newData = data.map((item) => {
 				// 	if (item._id === response.data._id) {
 				// 		return response.data;
@@ -82,6 +89,8 @@ const SingleNote = () => {
 			})
 			.catch((error) => {
 				console.log(error);
+				setLikeLoader(false);
+
 				// addToast('Server is down', {
 				// 	appearance: 'error',
 				// });
@@ -90,6 +99,8 @@ const SingleNote = () => {
 	};
 
 	const unfavourite = () => {
+		setLikeLoader(true);
+
 		fetch('http://localhost:5000/unfavourite', {
 			method: 'put',
 			headers: {
@@ -104,6 +115,7 @@ const SingleNote = () => {
 			.then((response) => {
 				console.log(response);
 				setNote(response.data);
+				setLikeLoader(false);
 
 				// const newData = data.map((item) => {
 				// 	if (item._id === response.data._id) {
@@ -126,6 +138,8 @@ const SingleNote = () => {
 			})
 			.catch((error) => {
 				console.log(error);
+				setLikeLoader(false);
+
 				// addToast('Server is down', {
 				// 	appearance: 'error',
 				// });
@@ -231,15 +245,17 @@ const SingleNote = () => {
 						>
 							{note.title}
 						</h4>
+
 						<Divider />
-						<h5
+						{/* <h5
 							style={{
 								wordBreak: 'break-word',
 								fontFamily: "'Lato', sans-serif",
 							}}
 						>
 							{note.body}
-						</h5>
+						</h5> */}
+						<ReactQuill value={note.body} readOnly={true} theme='bubble' />
 						<Card.Footer>
 							<Row style={{ padding: '10px' }}>
 								<Col>
@@ -266,19 +282,30 @@ const SingleNote = () => {
 								<Col>
 									{note.favourite ? (
 										<Tooltip text={'Remove from favourite'}>
-											<i
-												className='material-icons'
-												onClick={() => unfavourite()}
-												style={{ color: 'yellow' }}
-											>
-												favorite
-											</i>
+											{likeLoader ? (
+												<Spinner />
+											) : (
+												<i
+													className='material-icons'
+													onClick={() => unfavourite()}
+													style={{ color: 'yellow' }}
+												>
+													favorite
+												</i>
+											)}
 										</Tooltip>
 									) : (
 										<Tooltip text={'Add to favourite'}>
-											<i className='material-icons' onClick={() => favourite()}>
-												favorite_border
-											</i>
+											{likeLoader ? (
+												<Spinner />
+											) : (
+												<i
+													className='material-icons'
+													onClick={() => favourite()}
+												>
+													favorite_border
+												</i>
+											)}
 										</Tooltip>
 									)}
 								</Col>
@@ -294,72 +321,7 @@ const SingleNote = () => {
 						</Card.Footer>
 					</Card>
 				</Row>
-			) : // <div className='row'>
-			// 	<div className='col s12 m12'>
-			// 		<div className='card white darken-1 z-depth-3'>
-			// 			<div className='card-content black-text'>
-			// 				<span
-			// 					className='card-title'
-			// 					style={{
-			// 						fontFamily: "'Sriracha', cursive",
-			// 					}}
-			// 				>
-			// 					{note.title}
-			// 				</span>
-
-			// 				<p
-			// 					style={{
-			// 						fontFamily: "'Lato', sans-serif",
-			// 					}}
-			// 				>
-			// 					{note.body}
-			// 				</p>
-			// 			</div>
-			// 			<div className='card-action'>
-			// 				<div
-			// 					className='row'
-			// 					style={{
-			// 						margin: '5px',
-			// 						padding: '5px',
-			// 					}}
-			// 				>
-			// 					<div className='col right s3 m2'>
-			// 						<Link to={'/updatenote/' + noteId}>
-			// 							<i className='material-icons' style={{ color: 'green' }}>
-			// 								edit
-			// 							</i>
-			// 						</Link>
-			// 					</div>
-			// 					<div className='col right s3 m2'>
-			// 						<i
-			// 							data-target='modal3'
-			// 							className='material-icons modal-trigger'
-			// 							style={{ color: 'red' }}
-			// 						>
-			// 							delete
-			// 						</i>
-			// 					</div>
-			// 					<div className='col right s3 m2'>
-			// 						{note.favourite ? (
-			// 							<i
-			// 								className='material-icons'
-			// 								onClick={() => unfavourite()}
-			// 								style={{ color: 'yellow' }}
-			// 							>
-			// 								favorite
-			// 							</i>
-			// 						) : (
-			// 							<i className='material-icons' onClick={() => favourite()}>
-			// 								favorite_border
-			// 							</i>
-			// 						)}
-			// 					</div>
-			// 				</div>
-			// 			</div>
-			// 		</div>
-			// 	</div>
-			// </div>
-			null}
+			) : null}
 		</div>
 	);
 };

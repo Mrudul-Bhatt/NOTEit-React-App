@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 //import { LockOutlinedIcon } from '@material-ui/icons';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress, Link as Mlink } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 //import { useToasts, Loading, Spinner } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import { emailRegex } from '../regex';
+//import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const SignUp = () => {
 	//const classes = useStyles();
@@ -78,7 +79,8 @@ const SignUp = () => {
 			<div className='mycard'>
 				<div className='card auth-card input-field z-depth-0'>
 					<div>
-						<i className='medium material-icons'>account_circle</i>
+						{/* <i className='material-icons'>account_circle</i> */}
+
 						<h2 style={{ color: '#008cba' }}>Sign Up</h2>
 					</div>
 					<div className='input-field'>
@@ -117,15 +119,9 @@ const SignUp = () => {
 					<button className='button button2' onClick={() => signup()}>
 						Sign Up
 					</button>
-					<div
-						style={{
-							color: '#008cba',
-							backgroundColor: '#008cba',
-							padding: '10px',
-						}}
-					>
+					<Mlink>
 						<Link to='/signin'>Already have an account? Sign In</Link>
-					</div>
+					</Mlink>
 				</div>
 			</div>
 		</div>
