@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-//import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-//import { useToasts, Loading, Spinner, Button } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import * as actions from '../store/actions/user';
 import M from 'materialize-css';
-import { LinearProgress, Divider, CircularProgress } from '@material-ui/core';
+import { LinearProgress, Divider } from '@material-ui/core';
 import {
 	Tooltip,
 	Link as Zlink,
@@ -15,7 +12,6 @@ import {
 	Col,
 	Card,
 	Spinner,
-	Loading,
 } from '@zeit-ui/react';
 import { baseUrl } from '../utility/helper';
 

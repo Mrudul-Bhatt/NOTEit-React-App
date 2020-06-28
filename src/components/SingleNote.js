@@ -2,15 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useHistory } from 'react-router';
 import M from 'materialize-css';
 import { Link } from 'react-router-dom';
-import {
-	Row,
-	Card,
-	Link as ZLink,
-	Divider,
-	Col,
-	Tooltip,
-	Spinner,
-} from '@zeit-ui/react';
+import { Row, Card, Divider, Col, Tooltip, Spinner } from '@zeit-ui/react';
 import { LinearProgress } from '@material-ui/core';
 import ReactQuill from 'react-quill';
 import { useToasts } from 'react-toast-notifications';
@@ -20,9 +12,6 @@ const SingleNote = () => {
 	const { addToast } = useToasts();
 	const [note, setNote] = useState(null);
 	const { noteId } = useParams();
-	const [data, setData] = useState(null);
-	const [readOnly, setReadOnly] = useState(true);
-	const [theme, setTheme] = useState('bubble');
 	const history = useHistory();
 	const deleteModal = useRef(null);
 	const [loader, setLoader] = useState(false);

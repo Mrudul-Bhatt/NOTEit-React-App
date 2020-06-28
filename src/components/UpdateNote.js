@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router';
-import { Button, LinearProgress } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { LinearProgress } from '@material-ui/core';
 import M from 'materialize-css';
 import { useToasts } from 'react-toast-notifications';
 import ReactQuill from 'react-quill';
@@ -14,8 +13,6 @@ const UpdateNote = () => {
 	const { noteId } = useParams();
 	const [title, setTitle] = useState('');
 	const [body, setBody] = useState('');
-	const history = useHistory();
-	const deleteModal = useRef(null);
 	const [loader, setLoader] = useState(false);
 
 	useEffect(() => {

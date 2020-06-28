@@ -1,13 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
-//import { toast } from 'react-toastify';
-//import 'react-toastify/dist/ReactToastify.css';
 import { LinearProgress } from '@material-ui/core';
 import ReactQuill from 'react-quill';
 import { baseUrl } from '../utility/helper';
 import moment from 'moment';
-
-//toast.configure();
 
 const AddNote = () => {
 	const [title, setTitle] = useState('');
@@ -32,7 +28,7 @@ const AddNote = () => {
 		})
 			.then((res) => res.json())
 			.then((response) => {
-				console.log(response);
+				//console.log(response);
 				if (response.message) {
 					addToast(response.message, { appearance: 'success' });
 					setTitle('');
@@ -43,7 +39,7 @@ const AddNote = () => {
 				setLoader(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				//console.log(error);
 				addToast('Server is down', { appearance: 'error' });
 				setLoader(false);
 			});

@@ -1,23 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-//import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-//import { useToasts, Loading, Spinner, Button } from '@zeit-ui/react';
 import { useToasts } from 'react-toast-notifications';
-import * as actions from '../store/actions/user';
 import M from 'materialize-css';
 import { LinearProgress, Divider } from '@material-ui/core';
 import { Tooltip, Link as Zlink, Row, Col, Card } from '@zeit-ui/react';
 import { baseUrl } from '../utility/helper';
 
 const FavNotes = () => {
-	const dispatch = useDispatch();
 	const { addToast } = useToasts();
-	const notifyE = useSelector((state) => state.notifyE);
-	const notifyM = useSelector((state) => state.notifyM);
-	const click = useSelector((state) => state.click);
-	const cleanup = () => dispatch(actions.cleanup());
 	const [data, setData] = useState([]);
 	const [postid, setId] = useState(null);
 	const deleteModal = useRef(null);

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-
-//import { LockOutlinedIcon } from '@material-ui/icons';
 import { LinearProgress, Link as Mlink } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-//import { useToasts, Loading, Spinner } from '@zeit-ui/react';
+import { Link, useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { emailRegex, baseUrl } from '../utility/helper';
-//import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const SignUp = () => {
 	const [name, setName] = useState('');
@@ -14,6 +10,7 @@ const SignUp = () => {
 	const [password, setPassword] = useState('');
 	const { addToast } = useToasts();
 	const [loader, setLoader] = useState(false);
+	const history = useHistory();
 
 	const signup = () => {
 		let flag = 0;
@@ -56,6 +53,7 @@ const SignUp = () => {
 				//console.log(response);
 				if (response.message) {
 					addToast(response.message, { appearance: 'success' });
+					history.push('/signin');
 				} else {
 					addToast(response.error, { appearance: 'error' });
 				}

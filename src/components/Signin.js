@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-//import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-//import { useToasts, Loading, Spinner, Button } from '@zeit-ui/react';
 import { LinearProgress, Link as Mlink } from '@material-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import * as actions from '../store/actions/user';
@@ -12,7 +9,6 @@ const SignIn = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const { addToast } = useToasts();
-	const [loader, setLoader] = useState(false);
 	const dispatch = useDispatch();
 	const signin = (email, password) => dispatch(actions.signin(email, password));
 	const notifyE = useSelector((state) => state.notifyE);
@@ -30,16 +26,14 @@ const SignIn = () => {
 			addToast(notifyE, { appearance: 'success' });
 			cleanup();
 		}
-		console.log(click);
+		//console.log(click);
 	}, [click]);
 
 	const signinHandler = () => {
 		//console.log('signin start');
-		setLoader(true);
 
 		if (!email || !password) {
 			addToast('Please fill all details', { appearance: 'error' });
-			setLoader(false);
 			return;
 		}
 

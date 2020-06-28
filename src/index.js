@@ -9,7 +9,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { reducer } from './store/reducers/user';
 import { watchSaga } from './store/sagas/watchSaga';
-import { ZeitProvider, CssBaseline } from '@zeit-ui/react';
+import { ZeitProvider } from '@zeit-ui/react';
 import { ToastProvider } from 'react-toast-notifications';
 
 const rootReducer = reducer;

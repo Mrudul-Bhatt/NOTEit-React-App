@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import M from 'materialize-css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions/user';
-import { Tooltip, Link as Zlink, Divider } from '@zeit-ui/react';
+import { Tooltip } from '@zeit-ui/react';
 import { baseUrl } from '../utility/helper';
 
 const Navbar = () => {
@@ -11,7 +11,6 @@ const Navbar = () => {
 	const searchModal = useRef(null);
 	const [search, setSearch] = useState('');
 	const [notes, setNotes] = useState([]);
-	const history = useHistory();
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 	const logout = () => dispatch(actions.logout());
@@ -39,7 +38,12 @@ const Navbar = () => {
 			.then((res) => res.json())
 			.then((value) => {
 				//console.log(value);
-				setNotes(value.result);
+				const newNotes = value.result.filter((item) => {
+					if (item.postedBy._id === user._id) {
+						return item;
+					}
+				});
+				setNotes(newNotes);
 			})
 			.catch((err) => {
 				console.log(err);
